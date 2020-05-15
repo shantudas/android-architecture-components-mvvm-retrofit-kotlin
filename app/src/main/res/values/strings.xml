@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">aac-mvvm-retrofit-kotlin</string>
+    <string name="title_activity_home">HomeActivity</string>
+
+    <!-- bottom navigation menu -->
+    <string name="title_home">For you</string>
+    <string name="title_headlines">Headlines</string>
+    <string name="title_interests">Interests</string>
+</resources>
