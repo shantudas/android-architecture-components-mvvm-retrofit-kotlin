@@ -41,8 +41,7 @@ class HeadlineFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(HeadlineViewModel::class.java)
+        dashboardViewModel = ViewModelProviders.of(this).get(HeadlineViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_headlines, container, false)
 
         val recyclerView = root.findViewById<RecyclerView>(R.id.recyclerViewHeadlines)
