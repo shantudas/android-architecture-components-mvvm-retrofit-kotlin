@@ -12,8 +12,7 @@ class HeadlineAdapter(val headLines: List<Headline>) :
     RecyclerView.Adapter<HeadlineAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.each_row_headlines, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.each_row_headlines, parent, false)
         return MyViewHolder(view)
     }
 
@@ -22,7 +21,7 @@ class HeadlineAdapter(val headLines: List<Headline>) :
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = headLines.get(position)
+        val item = headLines[position]
         holder.tvHeadlineTitle.text = item.title
         holder.tvHeadlineDescription.text = item.description
 

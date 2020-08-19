@@ -51,5 +51,4 @@ class HeadlineFragment : Fragment() {
 
         return root
     }
-
 }

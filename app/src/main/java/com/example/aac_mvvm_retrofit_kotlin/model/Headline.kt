@@ -1,14 +1,14 @@
 package com.example.aac_mvvm_retrofit_kotlin.model
 
 data class Headline(
+    var id: Int,
     var author: String,
     var title: String,
     var description: String,
-    var imageUrl: String,
-    var publishedAt: String
+    var thumbnail: String,
+    var publishedAt: String,
+    var url: String
 ) {
-    override fun toString(): String {
-        return "Headline(author='$author', title='$title', description='$description', imageUrl='$imageUrl', publishedAt='$publishedAt')"
-    }
+
 }
 
