@@ -2,7 +2,7 @@ package com.example.aac_mvvm_retrofit_kotlin.retrofit
 
 import retrofit2.http.GET
 
-interface RetrofitService {
+interface Retrofit {
 
     /*
     * get top headlines through rest api
