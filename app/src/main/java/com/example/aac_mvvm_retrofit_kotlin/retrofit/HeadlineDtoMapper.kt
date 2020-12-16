@@ -1,31 +1,31 @@
 package com.example.aac_mvvm_retrofit_kotlin.retrofit
 
 import com.example.aac_mvvm_retrofit_kotlin.model.Headline
-import com.example.aac_mvvm_retrofit_kotlin.utilities.EntityMapper
+import com.example.aac_mvvm_retrofit_kotlin.utilities.DomainMapper
 import javax.inject.Inject
 
 /**
  * This class is responsible for mapping the network to domain object
  * and domain to network
  * */
-class NetworkMapper
+class HeadlineDtoMapper
 
 @Inject
-constructor() : EntityMapper<HeadlineNetworkEntity, Headline> {
+constructor() : DomainMapper<HeadlineDto, Headline> {
 
-    override fun mapFromEntity(entity: HeadlineNetworkEntity): Headline {
+    override fun mapToDomainModel(model: HeadlineDto): Headline {
         return Headline(
-            title = entity.title,
-            author = entity.author,
-            description = entity.description,
-            thumbnail = entity.urlToImage,
-            publishedAt = entity.publishedAt,
-            url = entity.url
+            title = model.title,
+            author = model.author,
+            description = model.description,
+            thumbnail = model.urlToImage,
+            publishedAt = model.publishedAt,
+            url = model.url
         )
     }
 
-    override fun mapToEntity(domainModel: Headline): HeadlineNetworkEntity {
-        return HeadlineNetworkEntity(
+    override fun mapFromDomain(domainModel: Headline): HeadlineDto {
+        return HeadlineDto(
             title = domainModel.title,
             author = domainModel.author,
             description = domainModel.description,
@@ -42,7 +42,7 @@ constructor() : EntityMapper<HeadlineNetworkEntity, Headline> {
      * @params HeadlineNetworkEntity
      * @return list of Headline
      * */
-    fun mapFromEntityList(entities: List<HeadlineNetworkEntity>): List<Headline> {
-        return entities.map { mapFromEntity(it) }
+    fun mapToDomainList(entities: List<HeadlineDto>): List<Headline> {
+        return entities.map { mapToDomainModel(it) }
     }
 }

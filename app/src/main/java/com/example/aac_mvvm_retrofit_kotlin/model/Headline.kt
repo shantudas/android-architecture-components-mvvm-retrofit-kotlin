@@ -1,14 +1,15 @@
 package com.example.aac_mvvm_retrofit_kotlin.model
 
-data class Headline(
-    //var id: Int,
-    var author: String,
-    var title: String,
-    var description: String,
-    var thumbnail: String,
-    var publishedAt: String,
-    var url: String
-) {
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize;
 
-}
+@Parcelize
+data class Headline(
+    var author: String? = null,
+    var title: String? = null,
+    var description: String? = null,
+    var thumbnail: String? = null,
+    var publishedAt: String? = null,
+    var url: String? = null
+) : Parcelable
 

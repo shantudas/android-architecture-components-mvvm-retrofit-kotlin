@@ -8,8 +8,8 @@ import androidx.room.Query
 @Dao
 interface HeadlineDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(blogEntity: HeadlineCacheEntity): Long
+    suspend fun insert(blogEntity: HeadlineEntity): Long
 
     @Query("SELECT * FROM headlines")
-    suspend fun get(): List<HeadlineCacheEntity>
+    suspend fun get(): List<HeadlineEntity>
 }
