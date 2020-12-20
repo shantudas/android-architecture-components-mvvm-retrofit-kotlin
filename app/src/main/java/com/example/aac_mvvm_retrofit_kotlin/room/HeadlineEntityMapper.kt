@@ -1,14 +1,14 @@
 package com.example.aac_mvvm_retrofit_kotlin.room
 
-import com.example.aac_mvvm_retrofit_kotlin.model.Headline
-import com.example.aac_mvvm_retrofit_kotlin.utilities.DomainMapper
+import com.example.aac_mvvm_retrofit_kotlin.model.Article
+import com.example.aac_mvvm_retrofit_kotlin.util.DomainMapper
 import javax.inject.Inject
 
 class HeadlineEntityMapper
 @Inject
-constructor() : DomainMapper<HeadlineEntity, Headline> {
-    override fun mapToDomainModel(model: HeadlineEntity): Headline {
-        return Headline(
+constructor() : DomainMapper<HeadlineEntity, Article> {
+    override fun mapToDomainModel(model: HeadlineEntity): Article {
+        return Article(
             title = model.title,
             author = model.author,
             description = model.description,
@@ -18,7 +18,7 @@ constructor() : DomainMapper<HeadlineEntity, Headline> {
         )
     }
 
-    override fun mapFromDomain(domainModel: Headline): HeadlineEntity {
+    override fun mapFromDomain(domainModel: Article): HeadlineEntity {
         return HeadlineEntity(
             title = domainModel.title,
             author = domainModel.author,
@@ -29,7 +29,7 @@ constructor() : DomainMapper<HeadlineEntity, Headline> {
         )
     }
 
-    fun mapFromEntityList(entities: List<HeadlineEntity>): List<Headline>{
+    fun mapFromEntityList(entities: List<HeadlineEntity>): List<Article>{
         return entities.map { mapToDomainModel(it) }
     }
 }

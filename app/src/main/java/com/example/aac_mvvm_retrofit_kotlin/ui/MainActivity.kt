@@ -8,7 +8,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.aac_mvvm_retrofit_kotlin.R
-import com.example.aac_mvvm_retrofit_kotlin.retrofit.RetrofitService
+import com.example.aac_mvvm_retrofit_kotlin.repository.ArticleRepository_Impl
+import com.example.aac_mvvm_retrofit_kotlin.network.retrofit.ArticleDtoMapper
+import com.example.aac_mvvm_retrofit_kotlin.network.retrofit.RetrofitService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,9 +33,9 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        setupNavVar()
+        setupBottomNavigation()
 
-        fetchData();
+        //fetchData();
 
 
     }
@@ -44,15 +46,27 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
             .create(RetrofitService::class.java)
+        val mapper: ArticleDtoMapper= ArticleDtoMapper()
+        val repository: ArticleRepository_Impl = ArticleRepository_Impl(retrofit,mapper)
 
         CoroutineScope(IO).launch {
-            val response = retrofit.getHeadlines("")
-            Log.i(TAG, "response :: $response")
+
+
+            val articles = repository.getArticles("us", "494d8b052f544a4e9848574a6c4930bc")
+
+            /*val response = retrofit.getHeadlines("us", "494d8b052f544a4e9848574a6c4930bc")
+            Log.i(TAG, "response :: ${response.articles}")
+            val articles: List<HeadlineDto> = response.articles*/
+
+            for (item in articles) {
+                Log.i(TAG, "article :: ${item.title}")
+            }
         }
 
     }
 
-    private fun setupNavVar() {
+
+    private fun setupBottomNavigation() {
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

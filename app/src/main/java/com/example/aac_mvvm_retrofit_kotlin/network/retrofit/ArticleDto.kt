@@ -1,9 +1,9 @@
-package com.example.aac_mvvm_retrofit_kotlin.retrofit
+package com.example.aac_mvvm_retrofit_kotlin.network.retrofit
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class HeadlineDto(
+class ArticleDto(
     @SerializedName("author")
     @Expose
     var author: String? = null,

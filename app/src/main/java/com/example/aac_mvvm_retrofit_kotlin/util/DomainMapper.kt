@@ -1,4 +1,4 @@
-package com.example.aac_mvvm_retrofit_kotlin.utilities
+package com.example.aac_mvvm_retrofit_kotlin.util
 
 /*
 * this interface represents to convert an entity to domain model and vice verse
@@ -11,7 +11,7 @@ package com.example.aac_mvvm_retrofit_kotlin.utilities
 * */
 interface DomainMapper<T, DomainModel> {
 
-    fun mapToDomainModel(model: T): DomainModel  //from entity to domain model
+    fun mapToDomainModel(model: T): DomainModel
 
-    fun mapFromDomain(domainModel: DomainModel): T   //from domain model to entity
+    fun mapFromDomain(domainModel: DomainModel): T
 }

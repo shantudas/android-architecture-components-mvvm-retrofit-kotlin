@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize;
 
 @Parcelize
-data class Headline(
+data class Article(
     var author: String? = null,
     var title: String? = null,
     var description: String? = null,
