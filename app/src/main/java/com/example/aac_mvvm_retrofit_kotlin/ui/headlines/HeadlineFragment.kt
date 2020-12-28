@@ -18,8 +18,11 @@ class HeadlineFragment : Fragment() {
 
     private val TAG: String = "AppDebug"
     private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewHeadlineCategory: RecyclerView
     private lateinit var adapter: HeadlineAdapter
+    private lateinit var categoryAdapter: HeadlineCategoryAdapter
     private val headlineViewModel: HeadlineViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +30,8 @@ class HeadlineFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_headlines, container, false)
-        recyclerView = root.findViewById<RecyclerView>(R.id.recyclerViewHeadlines)
+        recyclerView = root.findViewById(R.id.recyclerViewHeadlines)
+        recyclerViewHeadlineCategory = root.findViewById(R.id.recyclerViewHeadlineCategory)
         return root
     }
 
@@ -51,5 +55,12 @@ class HeadlineFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         adapter = HeadlineAdapter(context)
         recyclerView.adapter = adapter
+
+        val headlineCategories = getAllHeadlineCategories()
+        val mLayoutManager = LinearLayoutManager(context)
+        mLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recyclerViewHeadlineCategory.layoutManager = mLayoutManager
+        categoryAdapter = HeadlineCategoryAdapter(context, headlineCategories)
+        recyclerViewHeadlineCategory.adapter = categoryAdapter
     }
 }
