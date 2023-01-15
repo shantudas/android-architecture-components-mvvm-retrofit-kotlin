@@ -6,4 +6,10 @@
     <string name="title_home">Home</string>
     <string name="title_headlines">Headlines</string>
     <string name="title_interests">Interests</string>
+
+
+    <!-- headline page -->
+    <string name="title_section_categories">Categories</string>
+    <string name="title_section_categories_clear">Clear</string>
+    <string name="title_section_headlines">Headlines</string>
 </resources>
