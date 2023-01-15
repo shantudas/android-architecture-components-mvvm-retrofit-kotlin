@@ -1,4 +1,4 @@
-package com.example.aac_mvvm_retrofit_kotlin.ui.notifications
+package com.example.aac_mvvm_retrofit_kotlin.ui.interests
 
 import android.os.Bundle
 import android.view.LayoutInflater

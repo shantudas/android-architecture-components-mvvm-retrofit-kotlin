@@ -17,7 +17,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="16dp"
-            android:background="#e7e7e7"
             android:layout_marginLeft="16dp" />
 
         <LinearLayout
@@ -32,8 +31,6 @@
                 android:id="@+id/tvHeadlineTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
@@ -42,8 +39,6 @@
                 android:id="@+id/tvHeadlineDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />

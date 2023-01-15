@@ -35,36 +35,11 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomNavigation()
 
-        //fetchData();
-
-
     }
 
-    private fun fetchData() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://newsapi.org/v2/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
-            .build()
-            .create(RetrofitService::class.java)
-        val mapper: ArticleDtoMapper= ArticleDtoMapper()
-        val repository: ArticleRepository_Impl = ArticleRepository_Impl(retrofit,mapper)
-
-        CoroutineScope(IO).launch {
-
-
-            val articles = repository.getArticles("us", "494d8b052f544a4e9848574a6c4930bc")
-
-            /*val response = retrofit.getHeadlines("us", "494d8b052f544a4e9848574a6c4930bc")
-            Log.i(TAG, "response :: ${response.articles}")
-            val articles: List<HeadlineDto> = response.articles*/
-
-            for (item in articles) {
-                Log.i(TAG, "article :: ${item.title}")
-            }
-        }
-
+    private fun init() {
+        navView = findViewById(R.id.nav_view)
     }
-
 
     private fun setupBottomNavigation() {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -72,15 +47,13 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_headline, R.id.navigation_interests
+                R.id.navigation_home,
+                R.id.navigation_headline,
+                R.id.navigation_interests
             )
         )
-        //setupActionBarWithNavController(navController, appBarConfiguration)
+        setupActionBarWithNavController(navController, appBarConfiguration)
 
         navView.setupWithNavController(navController)
-    }
-
-    private fun init() {
-        navView = findViewById(R.id.nav_view)
     }
 }

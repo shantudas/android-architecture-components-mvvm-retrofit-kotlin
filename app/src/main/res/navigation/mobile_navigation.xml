@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_interests"
-        android:name="com.example.aac_mvvm_retrofit_kotlin.ui.notifications.InterestsFragment"
+        android:name="com.example.aac_mvvm_retrofit_kotlin.ui.interests.InterestsFragment"
         android:label="@string/title_interests"
         tools:layout="@layout/fragment_interests" />
 </navigation>
