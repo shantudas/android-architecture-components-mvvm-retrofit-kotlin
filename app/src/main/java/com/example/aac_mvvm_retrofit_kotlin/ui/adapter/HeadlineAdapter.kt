@@ -1,4 +1,4 @@
-package com.example.aac_mvvm_retrofit_kotlin.ui.headlines
+package com.example.aac_mvvm_retrofit_kotlin.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -31,7 +31,7 @@ class HeadlineAdapter(val context: Context?) : RecyclerView.Adapter<HeadlineAdap
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = articles[position]
         holder.tvHeadlineTitle.text = item.title
-        holder.tvHeadlineDescription.text = item.description
+//        holder.tvHeadlineSource.text = item.
         Glide.with(context!!)
             .load(item.thumbnail)
             .transform(CenterCrop(),RoundedCorners(15))
@@ -46,8 +46,8 @@ class HeadlineAdapter(val context: Context?) : RecyclerView.Adapter<HeadlineAdap
 
     class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
         val tvHeadlineTitle: MaterialTextView = itemView!!.findViewById(R.id.tvHeadlineTitle)
-        val tvHeadlineDescription: MaterialTextView =
-            itemView!!.findViewById(R.id.tvHeadlineDescription)
+        val tvHeadlineSource: MaterialTextView =
+            itemView!!.findViewById(R.id.tvHeadlineSource)
         val imgViewThumbnail: ImageView = itemView!!.findViewById(R.id.imgViewThumbnail)
     }
 }

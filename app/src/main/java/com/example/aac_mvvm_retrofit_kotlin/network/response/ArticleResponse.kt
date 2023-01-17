@@ -11,5 +11,5 @@ data class ArticleResponse(
     var totalResults: Int? = null,
 
     @SerializedName("articles")
-    var articles: List<ArticleDto>
+    var articles: MutableList<ArticleDto>
 )

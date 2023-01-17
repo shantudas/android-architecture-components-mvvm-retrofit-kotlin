@@ -15,20 +15,22 @@
         android:orientation="vertical">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvHeadlineTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tvHeadlineDescription"
+            android:id="@+id/tvHeadlineSource"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="3"
+            android:visibility="gone"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvHeadlineTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
 
     </LinearLayout>
 

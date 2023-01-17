@@ -1,6 +1,7 @@
 package com.example.aac_mvvm_retrofit_kotlin.network.retrofit
 
 import com.example.aac_mvvm_retrofit_kotlin.network.response.ArticleResponse
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -19,7 +20,7 @@ interface RetrofitService {
     suspend fun getHeadlines(
         @Query("country") country: String,
         @Query("apiKey") apiKey: String
-    ): ArticleResponse
+    ): Response<ArticleResponse>
 
     /*
     * search from everything

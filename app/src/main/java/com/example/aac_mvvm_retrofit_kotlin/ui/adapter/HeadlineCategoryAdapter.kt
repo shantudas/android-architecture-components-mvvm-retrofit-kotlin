@@ -1,4 +1,4 @@
-package com.example.aac_mvvm_retrofit_kotlin.ui.headlines
+package com.example.aac_mvvm_retrofit_kotlin.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aac_mvvm_retrofit_kotlin.R
-import com.google.android.material.textview.MaterialTextView
+import com.example.aac_mvvm_retrofit_kotlin.ui.headlines.HeadlineCategory
 
 class HeadlineCategoryAdapter(
     val context: Context?,
