@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.aac_mvvm_retrofit_kotlin.databinding.FragmentHeadlinesBinding
+import com.example.aac_mvvm_retrofit_kotlin.model.Article
 import com.example.aac_mvvm_retrofit_kotlin.state.NetworkState
 import com.example.aac_mvvm_retrofit_kotlin.ui.adapter.HeadlineAdapter
 import com.example.aac_mvvm_retrofit_kotlin.ui.adapter.HeadlineCategoryAdapter
@@ -23,7 +24,7 @@ import kotlinx.coroutines.flow.collect
 class HeadlineFragment : Fragment() {
 
     private val TAG: String = "HeadlineFragment"
-    private lateinit var adapter: HeadlineAdapter
+    private lateinit var headlineAdapter: HeadlineAdapter
     private lateinit var binding: FragmentHeadlinesBinding
     private lateinit var categoryAdapter: HeadlineCategoryAdapter
     private val headlineViewModel: HeadlineViewModel by viewModels()
@@ -50,10 +51,20 @@ class HeadlineFragment : Fragment() {
                 when (response) {
                     is NetworkState.Loading -> {
                         Log.d(TAG, "articleResponse: is loading")
+                        showHeadlineLoader()
                     }
 
                     is NetworkState.Success -> {
-                        Log.d(TAG, "articleResponse: " + response.data)
+                        Log.d(TAG, "articleResponse: " + response.data.toString())
+                        hideHeadlineLoader()
+                        hideErrorMessage()
+                        showHeadlineList()
+                        response.data?.let { data ->
+                            headlineAdapter.setItems(data.articles as ArrayList<Article>)
+//                            headlineAdapter.differ.submitList(
+//                                data.articles
+//                            )
+                        }
                     }
 
                     is NetworkState.Error -> {
@@ -66,6 +77,30 @@ class HeadlineFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun showHeadlineList() {
+        binding.recyclerViewHeadlines.visibility=View.VISIBLE
+    }
+
+    private fun hideHeadlineList() {
+        binding.recyclerViewHeadlines.visibility=View.GONE
+    }
+
+    private fun hideErrorMessage() {
+
+    }
+
+
+
+    private fun showHeadlineLoader() {
+        binding.shimmerHeadline.visibility = View.VISIBLE
+        binding.shimmerHeadline.startShimmer()
+    }
+
+    private fun hideHeadlineLoader() {
+        binding.shimmerHeadline.stopShimmer()
+        binding.shimmerHeadline.visibility = View.GONE
     }
 
     private fun init() {
@@ -95,8 +130,8 @@ class HeadlineFragment : Fragment() {
 
     private fun setupHeadlineRecyclerView() {
         binding.recyclerViewHeadlines.layoutManager = LinearLayoutManager(context)
-        adapter = HeadlineAdapter(context)
-        binding.recyclerViewHeadlines.adapter = adapter
+        headlineAdapter = HeadlineAdapter(context)
+        binding.recyclerViewHeadlines.adapter = headlineAdapter
     }
 
 }

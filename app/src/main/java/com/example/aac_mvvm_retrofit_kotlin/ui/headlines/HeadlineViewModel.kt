@@ -9,6 +9,7 @@ import com.example.aac_mvvm_retrofit_kotlin.repository.ArticleRepository
 import com.example.aac_mvvm_retrofit_kotlin.state.NetworkState
 import com.example.aac_mvvm_retrofit_kotlin.util.Constants
 import com.example.aac_mvvm_retrofit_kotlin.util.NetworkHelper
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @ExperimentalCoroutinesApi
+@HiltViewModel
 class HeadlineViewModel @Inject constructor(
     private val repository: ArticleRepository,
     @Named("auth_token") private val token: String,
