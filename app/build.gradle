@@ -51,6 +51,8 @@ dependencies {
     def ktx_version = "1.9.0"
     def constrain_layout_version = "2.1.4"
     def material_version = "1.7.0"
+    def shimmer_version = "0.5.0"
+    def swipe_refresh_version = "1.1.0"
     def navigation_version = "2.5.3"
     def life_cycle_version = "2.2.0"
     def hilt_version = "2.44.2"
@@ -62,14 +64,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     //App Compat, layout, Core
-    implementation("androidx.multidex:multidex:$multidex_version")
+    implementation "androidx.multidex:multidex:$multidex_version"
     implementation "androidx.appcompat:appcompat:$app_compat_version"
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.constraintlayout:constraintlayout:$constrain_layout_version"
 
-    // material
+    // ui
     implementation "com.google.android.material:material:$material_version"
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    implementation "com.facebook.shimmer:shimmer:$shimmer_version"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_version"
 
     // navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"

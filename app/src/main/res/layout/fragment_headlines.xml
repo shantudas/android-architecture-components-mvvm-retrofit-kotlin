@@ -6,7 +6,8 @@
 
     </data>
 
-    <RelativeLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshHeadline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.headlines.HeadlineFragment">
@@ -77,5 +78,5 @@
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

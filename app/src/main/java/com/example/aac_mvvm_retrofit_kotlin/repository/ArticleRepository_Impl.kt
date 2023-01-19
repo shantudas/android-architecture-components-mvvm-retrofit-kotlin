@@ -20,7 +20,7 @@ class ArticleRepository_Impl(
 
             NetworkState<ArticleResponse> {
         return try {
-            val response = retrofitService.getHeadlines(country, token)
+            val response = retrofitService.getArticles(country, token)
             val result = response.body()
             if (response.isSuccessful && result != null) {
                 NetworkState.Success(result)

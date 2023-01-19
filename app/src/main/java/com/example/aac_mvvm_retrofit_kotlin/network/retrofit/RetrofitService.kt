@@ -17,7 +17,7 @@ interface RetrofitService {
     * this is suspend function, that means it can call inside coroutine and another suspend function
     * */
     @GET("top-headlines")
-    suspend fun getHeadlines(
+    suspend fun getArticles(
         @Query("country") country: String,
         @Query("apiKey") apiKey: String
     ): Response<ArticleResponse>
@@ -32,7 +32,7 @@ interface RetrofitService {
     * this is suspend function, that means it can call inside coroutine and another suspend function
     * */
     @GET("everything")
-    suspend fun search(
+    suspend fun searchArticles(
         @Query("q") query: String,
         @Query("apiKey") apiKey: String
     ): ArticleResponse

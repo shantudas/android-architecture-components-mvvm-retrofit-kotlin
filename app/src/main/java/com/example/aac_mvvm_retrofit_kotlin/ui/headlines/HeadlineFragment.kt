@@ -19,6 +19,7 @@ import com.example.aac_mvvm_retrofit_kotlin.ui.adapter.HeadlineAdapter
 import com.example.aac_mvvm_retrofit_kotlin.ui.adapter.HeadlineCategoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import okhttp3.internal.notify
 
 @AndroidEntryPoint
 class HeadlineFragment : Fragment() {
@@ -28,6 +29,7 @@ class HeadlineFragment : Fragment() {
     private lateinit var binding: FragmentHeadlinesBinding
     private lateinit var categoryAdapter: HeadlineCategoryAdapter
     private val headlineViewModel: HeadlineViewModel by viewModels()
+    private var articleArrayList = arrayListOf<Article>()
 
 
     override fun onCreateView(
@@ -46,51 +48,71 @@ class HeadlineFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init();
 
-        lifecycleScope.launchWhenStarted {
-            headlineViewModel.articleResponse.collect { response ->
-                when (response) {
-                    is NetworkState.Loading -> {
-                        Log.d(TAG, "articleResponse: is loading")
-                        showHeadlineLoader()
-                    }
+        collectHeadlineResponse()
 
-                    is NetworkState.Success -> {
-                        Log.d(TAG, "articleResponse: " + response.data.toString())
-                        hideHeadlineLoader()
-                        hideErrorMessage()
-                        showHeadlineList()
-                        response.data?.let { data ->
-                            headlineAdapter.setItems(data.articles as ArrayList<Article>)
+        binding.swipeRefreshHeadline.setOnRefreshListener {
+            collectHeadlineResponse()
+        }
+
+    }
+
+    private fun collectHeadlineResponse() {
+        lifecycleScope.launchWhenStarted {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+
+                clearHeadline()
+
+                headlineViewModel.articleResponse.collect { response ->
+                    when (response) {
+                        is NetworkState.Loading -> {
+                            Log.d(TAG, "articleResponse: is loading")
+                            showHeadlineLoader()
+                        }
+
+                        is NetworkState.Success -> {
+                            Log.d(TAG, "articleResponse: " + response.data.toString())
+                            hideHeadlineLoader()
+                            hideErrorMessage()
+                            showHeadlineList()
+                            response.data?.let { data ->
+                                articleArrayList=data.articles as ArrayList<Article>
+                                headlineAdapter.setItems(articleArrayList)
 //                            headlineAdapter.differ.submitList(
 //                                data.articles
 //                            )
+                            }
                         }
-                    }
 
-                    is NetworkState.Error -> {
-                        Log.d(TAG, "articleResponse: error")
-                    }
+                        is NetworkState.Error -> {
+                            Log.d(TAG, "articleResponse: error")
+                        }
 
-                    else -> {
+                        else -> {
 
+                        }
                     }
                 }
             }
         }
     }
 
+    private fun clearHeadline() {
+        Log.d(TAG, "clearHeadline: called")
+        articleArrayList.clear()
+        headlineAdapter.notifyDataSetChanged()
+    }
+
     private fun showHeadlineList() {
-        binding.recyclerViewHeadlines.visibility=View.VISIBLE
+        binding.recyclerViewHeadlines.visibility = View.VISIBLE
     }
 
     private fun hideHeadlineList() {
-        binding.recyclerViewHeadlines.visibility=View.GONE
+        binding.recyclerViewHeadlines.visibility = View.GONE
     }
 
     private fun hideErrorMessage() {
 
     }
-
 
 
     private fun showHeadlineLoader() {
