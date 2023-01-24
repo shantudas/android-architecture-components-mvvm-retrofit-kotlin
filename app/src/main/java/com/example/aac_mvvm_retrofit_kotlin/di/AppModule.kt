@@ -1,7 +1,7 @@
 package com.example.aac_mvvm_retrofit_kotlin.di
 
 import android.content.Context
-import com.example.aac_mvvm_retrofit_kotlin.ui.MyApplication
+import com.example.aac_mvvm_retrofit_kotlin.MyApplication
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -1,9 +1,9 @@
 package com.example.aac_mvvm_retrofit_kotlin.di
 
-import com.example.aac_mvvm_retrofit_kotlin.network.retrofit.ArticleDtoMapper
-import com.example.aac_mvvm_retrofit_kotlin.network.retrofit.RetrofitService
-import com.example.aac_mvvm_retrofit_kotlin.repository.ArticleRepository
-import com.example.aac_mvvm_retrofit_kotlin.repository.ArticleRepository_Impl
+import com.example.aac_mvvm_retrofit_kotlin.data.mapper.ArticleDtoMapper
+import com.example.aac_mvvm_retrofit_kotlin.data.remote.NewsApi
+import com.example.aac_mvvm_retrofit_kotlin.domain.model.repository.ArticleRepository
+import com.example.aac_mvvm_retrofit_kotlin.data.repository.ArticleRepository_Impl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,11 +16,11 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideRecipeRepository(
-        retrofitService: RetrofitService,
+        newsApi: NewsApi,
         articleDtoMapper: ArticleDtoMapper
-    ): ArticleRepository{
+    ): ArticleRepository {
         return ArticleRepository_Impl(
-            retrofitService = retrofitService,
+            newsApi = newsApi,
             mapper = articleDtoMapper
         )
     }

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.aac_mvvm_retrofit_kotlin.ui.home.HomeFragment"
+        android:name="com.example.aac_mvvm_retrofit_kotlin.presentation.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_headline"
-        android:name="com.example.aac_mvvm_retrofit_kotlin.ui.headlines.HeadlineFragment"
+        android:name="com.example.aac_mvvm_retrofit_kotlin.presentation.headlines.HeadlineFragment"
         android:label="@string/title_headlines"
         tools:layout="@layout/fragment_headlines" />
 
     <fragment
         android:id="@+id/navigation_interests"
-        android:name="com.example.aac_mvvm_retrofit_kotlin.ui.interests.InterestsFragment"
+        android:name="com.example.aac_mvvm_retrofit_kotlin.presentation.interests.InterestsFragment"
         android:label="@string/title_interests"
         tools:layout="@layout/fragment_interests" />
 </navigation>
