@@ -17,6 +17,7 @@ import com.example.aac_mvvm_retrofit_kotlin.util.Resource
 import com.example.aac_mvvm_retrofit_kotlin.presentation.adapter.HeadlineAdapter
 import com.example.aac_mvvm_retrofit_kotlin.presentation.adapter.HeadlineCategoryAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 class HeadlineFragment : Fragment() {
@@ -41,6 +42,7 @@ class HeadlineFragment : Fragment() {
     }
 
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init();
@@ -56,6 +58,7 @@ class HeadlineFragment : Fragment() {
 
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun collectHeadlineResponse() {
         lifecycleScope.launchWhenStarted {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {

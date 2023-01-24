@@ -44,7 +44,7 @@ class HeadlineAdapter(val context: Context?) : RecyclerView.Adapter<HeadlineAdap
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = articles[position]
-        holder.tvHeadlineTitle.text = item.title
+        holder.tvHeadlineTitle.text = "$position ${item.title}"
 //        holder.tvHeadlineSource.text = item.
         Glide.with(context!!)
             .load(item.thumbnail)
@@ -54,6 +54,7 @@ class HeadlineAdapter(val context: Context?) : RecyclerView.Adapter<HeadlineAdap
     }
 
     fun setItems(arrayList: ArrayList<Article>) {
+        articles.clear()
         articles.addAll(arrayList)
         notifyDataSetChanged()
     }
