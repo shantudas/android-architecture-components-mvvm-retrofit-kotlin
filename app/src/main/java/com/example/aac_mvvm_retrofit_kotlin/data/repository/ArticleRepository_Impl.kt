@@ -1,29 +1,27 @@
 package com.example.aac_mvvm_retrofit_kotlin.data.repository
 
-import com.example.aac_mvvm_retrofit_kotlin.data.remote.response.ArticleResponse
 import com.example.aac_mvvm_retrofit_kotlin.data.mapper.ArticleDtoMapper
-import com.example.aac_mvvm_retrofit_kotlin.data.remote.NewsApi
+import com.example.aac_mvvm_retrofit_kotlin.data.remote.ArticleApi
+import com.example.aac_mvvm_retrofit_kotlin.domain.model.Article
 import com.example.aac_mvvm_retrofit_kotlin.domain.model.repository.ArticleRepository
 import com.example.aac_mvvm_retrofit_kotlin.util.Resource
 
 class ArticleRepository_Impl(
-    private val newsApi: NewsApi,
+    private val articleApi: ArticleApi,
     private val mapper: ArticleDtoMapper
 
 ) : ArticleRepository {
     override suspend fun getArticles(
         country: String,
         token: String
-    ):/* List<Article> {
-        return mapper.mapToDomainList(retrofitService.getHeadlines(country, token).articles)
-    }*/
-
-            Resource<ArticleResponse> {
+    ): Resource<List<Article>> {
         return try {
-            val response = newsApi.getArticles(country, token)
-            val result = response.body()
-            if (response.isSuccessful && result != null) {
-                Resource.Success(result)
+            val response = articleApi.getArticles(country, token)
+            val responseBody = response.body()
+            if (response.isSuccessful && responseBody != null) {
+                Resource.Success(
+                    mapper.mapToDomainList(responseBody.articles)
+                )
             } else {
                 Resource.Error("An error occurred")
             }

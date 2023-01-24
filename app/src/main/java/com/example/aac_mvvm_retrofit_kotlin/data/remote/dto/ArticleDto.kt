@@ -1,31 +1,14 @@
 package com.example.aac_mvvm_retrofit_kotlin.data.remote.dto
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class ArticleDto(
-    @SerializedName("author")
-    @Expose
-    var author: String? = null,
+data class ArticleDto(
+    @SerializedName("status")
+    var status: String? = null,
 
-    @SerializedName("title")
-    @Expose
-    var title: String? = null,
+    @SerializedName("totalResults")
+    var totalResults: Int? = null,
 
-    @SerializedName("description")
-    @Expose
-    var description: String? = null,
-
-    @SerializedName("urlToImage")
-    @Expose
-    var urlToImage: String? = null,
-
-    @SerializedName("publishedAt")
-    @Expose
-    var publishedAt: String? = null,
-
-    @SerializedName("url")
-    @Expose
-    var url: String? = null
+    @SerializedName("articles")
+    var articles: List<ArticleListDto>
 )
-

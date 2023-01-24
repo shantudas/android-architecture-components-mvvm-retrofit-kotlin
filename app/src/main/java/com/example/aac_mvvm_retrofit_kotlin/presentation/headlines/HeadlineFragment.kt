@@ -56,10 +56,7 @@ class HeadlineFragment : Fragment() {
     private fun collectHeadlineResponse() {
         lifecycleScope.launchWhenStarted {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-
-                clearHeadline()
-
-                headlineViewModel.articleResponse.collect { response ->
+                headlineViewModel.articleResource.collect { response ->
                     when (response) {
                         is Resource.Loading -> {
                             Log.d(TAG, "articleResponse: is loading")
@@ -72,11 +69,8 @@ class HeadlineFragment : Fragment() {
                             hideErrorMessage()
                             showHeadlineList()
                             response.data?.let { data ->
-                                articleArrayList=data.articles as ArrayList<Article>
+                                articleArrayList=data as ArrayList<Article>
                                 headlineAdapter.setItems(articleArrayList)
-//                            headlineAdapter.differ.submitList(
-//                                data.articles
-//                            )
                             }
                         }
 
@@ -125,15 +119,6 @@ class HeadlineFragment : Fragment() {
     private fun init() {
         setupCategoryRecyclerView()
         setupHeadlineRecyclerView()
-    }
-
-    private fun setupObservers() {
-//        headlineViewModel.articles.observe(viewLifecycleOwner, Observer {
-//            if (!it.isNullOrEmpty()) adapter.setItems(ArrayList(it))
-//            for (item in it) {
-//                Log.i(TAG, "setupObservers: ${item.title}")
-//            }
-//        })
     }
 
 

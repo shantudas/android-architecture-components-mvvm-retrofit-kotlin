@@ -1,11 +1,11 @@
 package com.example.aac_mvvm_retrofit_kotlin.data.remote
 
-import com.example.aac_mvvm_retrofit_kotlin.data.remote.response.ArticleResponse
+import com.example.aac_mvvm_retrofit_kotlin.data.remote.dto.ArticleDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface NewsApi {
+interface ArticleApi {
 
     /*
     * get top headlines through rest api
@@ -20,7 +20,7 @@ interface NewsApi {
     suspend fun getArticles(
         @Query("country") country: String,
         @Query("apiKey") apiKey: String
-    ): Response<ArticleResponse>
+    ): Response<ArticleDto>
 
     /*
     * search from everything
@@ -35,5 +35,5 @@ interface NewsApi {
     suspend fun searchArticles(
         @Query("q") query: String,
         @Query("apiKey") apiKey: String
-    ): ArticleResponse
+    ): ArticleDto
 }

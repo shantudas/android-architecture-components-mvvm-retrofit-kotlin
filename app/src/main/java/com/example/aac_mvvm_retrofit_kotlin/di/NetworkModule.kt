@@ -1,7 +1,7 @@
 package com.example.aac_mvvm_retrofit_kotlin.di
 
 import com.example.aac_mvvm_retrofit_kotlin.data.mapper.ArticleDtoMapper
-import com.example.aac_mvvm_retrofit_kotlin.data.remote.NewsApi
+import com.example.aac_mvvm_retrofit_kotlin.data.remote.ArticleApi
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -23,12 +23,12 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofitService(): NewsApi {
+    fun provideRetrofitService(): ArticleApi {
         return Retrofit.Builder()
             .baseUrl("https://newsapi.org/v2/")
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
-            .create(NewsApi::class.java)
+            .create(ArticleApi::class.java)
     }
 
     @Singleton

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.aac_mvvm_retrofit_kotlin.domain.model.Article
-import com.example.aac_mvvm_retrofit_kotlin.data.remote.response.ArticleResponse
+import com.example.aac_mvvm_retrofit_kotlin.data.remote.dto.ArticleDto
 import com.example.aac_mvvm_retrofit_kotlin.domain.model.repository.ArticleRepository
 import com.example.aac_mvvm_retrofit_kotlin.util.Resource
 import com.example.aac_mvvm_retrofit_kotlin.util.Constants
@@ -35,13 +35,13 @@ class HeadlineViewModel @Inject constructor(
         get() = _errorMessage
 
     // response
-    private val _articleResponse =
-        MutableStateFlow<Resource<ArticleResponse>>(Resource.Empty())
-    val articleResponse: StateFlow<Resource<ArticleResponse>>
-        get() = _articleResponse
+    private val _articleResource =
+        MutableStateFlow<Resource<List<Article>>>(Resource.Empty())
+    val articleResource: StateFlow<Resource<List<Article>>>
+        get() = _articleResource
 
 
-    private var feedResponse: ArticleResponse? = null
+    private var feedResponse: ArticleDto? = null
 
     init {
         fetchArticles(Constants.CountryCode);
@@ -54,13 +54,13 @@ class HeadlineViewModel @Inject constructor(
     private fun fetchArticles(countryCode: String) {
         if (networkHelper.isNetworkConnected()) {
             viewModelScope.launch {
-                _articleResponse.value = Resource.Loading()
+                _articleResource.value = Resource.Loading()
                 when (val response = repository.getArticles(countryCode, token)) {
                     is Resource.Success -> {
-                        _articleResponse.value = handleArticleResponse(response)
+                        _articleResource.value = response
                     }
                     is Resource.Error -> {
-                        _articleResponse.value =
+                        _articleResource.value =
                             Resource.Error(
                                 response.message ?: "Error"
                             )
@@ -74,7 +74,7 @@ class HeadlineViewModel @Inject constructor(
         }
     }
 
-    private fun handleArticleResponse(response: Resource<ArticleResponse>): Resource<ArticleResponse> {
+    private fun handleArticleResponse(response: Resource<ArticleDto>): Resource<ArticleDto> {
         response.data?.let { resultResponse ->
             return Resource.Success(feedResponse ?: resultResponse)
         }
