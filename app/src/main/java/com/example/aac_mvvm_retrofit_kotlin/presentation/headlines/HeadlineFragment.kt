@@ -48,7 +48,10 @@ class HeadlineFragment : Fragment() {
         collectHeadlineResponse()
 
         binding.swipeRefreshHeadline.setOnRefreshListener {
-            collectHeadlineResponse()
+            clearHeadline()
+            hideHeadlineList()
+            showSwipeRefresh()
+            headlineViewModel.refreshArticles()
         }
 
     }
@@ -64,12 +67,15 @@ class HeadlineFragment : Fragment() {
                         }
 
                         is Resource.Success -> {
-                            Log.d(TAG, "articleResponse: " + response.data.toString())
+                            Log.d(
+                                TAG,
+                                "articleResponse: size" + response.data?.size + " \n data " + response.data.toString()
+                            )
                             hideHeadlineLoader()
-                            hideErrorMessage()
+                            hideSwipeRefresh()
                             showHeadlineList()
                             response.data?.let { data ->
-                                articleArrayList=data as ArrayList<Article>
+                                articleArrayList = data as ArrayList<Article>
                                 headlineAdapter.setItems(articleArrayList)
                             }
                         }
@@ -101,10 +107,6 @@ class HeadlineFragment : Fragment() {
         binding.recyclerViewHeadlines.visibility = View.GONE
     }
 
-    private fun hideErrorMessage() {
-
-    }
-
 
     private fun showHeadlineLoader() {
         binding.shimmerHeadline.visibility = View.VISIBLE
@@ -114,6 +116,16 @@ class HeadlineFragment : Fragment() {
     private fun hideHeadlineLoader() {
         binding.shimmerHeadline.stopShimmer()
         binding.shimmerHeadline.visibility = View.GONE
+    }
+
+    private fun showSwipeRefresh() {
+        if (!binding.swipeRefreshHeadline.isRefreshing) {
+            binding.swipeRefreshHeadline.isRefreshing = true
+        }
+    }
+
+    private fun hideSwipeRefresh() {
+        binding.swipeRefreshHeadline.isRefreshing = false
     }
 
     private fun init() {

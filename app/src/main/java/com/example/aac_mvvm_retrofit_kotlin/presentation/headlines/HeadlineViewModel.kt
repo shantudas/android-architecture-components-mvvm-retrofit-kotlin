@@ -35,7 +35,11 @@ class HeadlineViewModel @Inject constructor(
         get() = _articleResource
 
     init {
-        getArticles(Constants.CountryCode);
+        getArticles(Constants.CountryCode)
+    }
+
+    fun refreshArticles(){
+        getArticles(Constants.CountryCode)
     }
 
     private fun getArticles(countryCode: String) {
