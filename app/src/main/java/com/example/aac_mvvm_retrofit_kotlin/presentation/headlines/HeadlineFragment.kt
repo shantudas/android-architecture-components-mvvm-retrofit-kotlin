@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,18 +17,19 @@ import com.example.aac_mvvm_retrofit_kotlin.domain.model.Article
 import com.example.aac_mvvm_retrofit_kotlin.util.Resource
 import com.example.aac_mvvm_retrofit_kotlin.presentation.adapter.HeadlineAdapter
 import com.example.aac_mvvm_retrofit_kotlin.presentation.adapter.HeadlineCategoryAdapter
+import com.example.aac_mvvm_retrofit_kotlin.util.CellClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
-class HeadlineFragment : Fragment() {
+class HeadlineFragment : Fragment(), CellClickListener {
 
     private val TAG: String = "HeadlineFragment"
     private lateinit var headlineAdapter: HeadlineAdapter
     private lateinit var binding: FragmentHeadlinesBinding
     private lateinit var categoryAdapter: HeadlineCategoryAdapter
     private val headlineViewModel: HeadlineViewModel by viewModels()
-    private var articleArrayList = arrayListOf<Article>()
+    private var articleList: ArrayList<Article> = ArrayList()
 
 
     override fun onCreateView(
@@ -35,7 +37,6 @@ class HeadlineFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //        val root = inflater.inflate(R.layout.fragment_headlines, container, false)
         binding = FragmentHeadlinesBinding.inflate(layoutInflater)
         val view = binding.root
         return view.rootView
@@ -72,14 +73,16 @@ class HeadlineFragment : Fragment() {
                         is Resource.Success -> {
                             Log.d(
                                 TAG,
-                                "articleResponse: size" + response.data?.size + " \n data " + response.data.toString()
+                                "articleResponse: size" +
+                                        response.data?.size +
+                                        " \n data " + response.data.toString()
                             )
                             hideHeadlineLoader()
                             hideSwipeRefresh()
                             showHeadlineList()
                             response.data?.let { data ->
-                                articleArrayList = data as ArrayList<Article>
-                                headlineAdapter.setItems(articleArrayList)
+                                articleList = data as ArrayList<Article>
+                                headlineAdapter.setItems(articleList)
                             }
                         }
 
@@ -98,7 +101,7 @@ class HeadlineFragment : Fragment() {
 
     private fun clearHeadline() {
         Log.d(TAG, "clearHeadline: called")
-        articleArrayList.clear()
+        articleList.clear()
         headlineAdapter.notifyDataSetChanged()
     }
 
@@ -149,8 +152,13 @@ class HeadlineFragment : Fragment() {
 
     private fun setupHeadlineRecyclerView() {
         binding.recyclerViewHeadlines.layoutManager = LinearLayoutManager(context)
-        headlineAdapter = HeadlineAdapter(context)
+        headlineAdapter = HeadlineAdapter(context, articleList, this)
         binding.recyclerViewHeadlines.adapter = headlineAdapter
     }
+
+    override fun onCellClickListener(position: Int) {
+        Log.d(TAG, "onCellClickListener: " + articleList[position].toString())
+    }
+
 
 }

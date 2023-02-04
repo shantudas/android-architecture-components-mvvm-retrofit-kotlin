@@ -1,68 +1,61 @@
 package com.example.aac_mvvm_retrofit_kotlin.presentation.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.aac_mvvm_retrofit_kotlin.R
+import com.example.aac_mvvm_retrofit_kotlin.databinding.EachRowHeadlinesBinding
+import com.example.aac_mvvm_retrofit_kotlin.databinding.FragmentHeadlinesBinding
 import com.example.aac_mvvm_retrofit_kotlin.domain.model.Article
+import com.example.aac_mvvm_retrofit_kotlin.util.CellClickListener
 import com.google.android.material.textview.MaterialTextView
 
-class HeadlineAdapter(val context: Context?) : RecyclerView.Adapter<HeadlineAdapter.MyViewHolder>() {
-
-    private val articles = ArrayList<Article>()
-
-    private val differCallback = object : DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem.url == newItem.url
-        }
-
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-            return oldItem == newItem
-        }
-    }
-
-    val differ = AsyncListDiffer(this, differCallback)
-
+class HeadlineAdapter(
+    private val context: Context?,
+    private var articleList: ArrayList<Article>,
+    private val cellClickListener: CellClickListener
+    ) : RecyclerView.Adapter<HeadlineAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.each_row_headlines, parent, false)
-        return MyViewHolder(view)
+        val binding= EachRowHeadlinesBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false,
+        )
+        return MyViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return articles.size;
+        return articleList.size;
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val item = articles[position]
-        holder.tvHeadlineTitle.text = "$position ${item.title}"
-//        holder.tvHeadlineSource.text = item.
-        Glide.with(context!!)
-            .load(item.thumbnail)
-            .transform(CenterCrop(),RoundedCorners(15))
-            .into(holder.imgViewThumbnail)
-
+        val item = articleList[position]
+        holder.bind(item)
+        holder.itemView.setOnClickListener{
+            cellClickListener.onCellClickListener(holder.absoluteAdapterPosition)
+        }
     }
 
     fun setItems(arrayList: ArrayList<Article>) {
-        articles.clear()
-        articles.addAll(arrayList)
+        articleList.clear()
+        articleList.addAll(arrayList)
         notifyDataSetChanged()
     }
 
-    class MyViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
-        val tvHeadlineTitle: MaterialTextView = itemView!!.findViewById(R.id.tvHeadlineTitle)
-        val tvHeadlineSource: MaterialTextView =
-            itemView!!.findViewById(R.id.tvHeadlineSource)
-        val imgViewThumbnail: ImageView = itemView!!.findViewById(R.id.imgViewThumbnail)
+    inner class MyViewHolder(private val binding: EachRowHeadlinesBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item: Article) {
+            binding.tvHeadlineTitle.text= "$absoluteAdapterPosition ${item.title}"
+            Glide.with(context!!)
+                .load(item.thumbnail)
+                .transform(CenterCrop(),RoundedCorners(15))
+                .into(binding.imgViewThumbnail)
+        }
     }
 }
