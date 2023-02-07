@@ -2,7 +2,6 @@ package com.example.aac_mvvm_retrofit_kotlin.presentation.headlines
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.aac_mvvm_retrofit_kotlin.domain.model.Article
 import com.example.aac_mvvm_retrofit_kotlin.domain.model.repository.ArticleRepository
 import com.example.aac_mvvm_retrofit_kotlin.util.Constants
 import com.example.aac_mvvm_retrofit_kotlin.util.NetworkHelper
@@ -23,16 +22,11 @@ class HeadlineViewModel @Inject constructor(
     private val networkHelper: NetworkHelper
 ) : ViewModel() {
     private val TAG: String = "HeadlineViewModel"
-    // error message
-    private val _errorMessage = MutableStateFlow("")
-    val errorMessage: StateFlow<String>
-        get() = _errorMessage
 
-    // response
-    private val _articleResource =
-        MutableStateFlow<Resource<List<Article>>>(Resource.Empty())
-    val articleResource: StateFlow<Resource<List<Article>>>
-        get() = _articleResource
+    // Backing property to avoid state updates from other classes
+    private val _uiState = MutableStateFlow<HeadlineUiState>(HeadlineUiState.Loading)
+    // The UI collects from this StateFlow to get its state updates
+    val uiState: StateFlow<HeadlineUiState> = _uiState
 
     init {
         getArticles(Constants.CountryCode)
@@ -45,22 +39,20 @@ class HeadlineViewModel @Inject constructor(
     private fun getArticles(countryCode: String) {
         if (networkHelper.isNetworkConnected()) {
             viewModelScope.launch {
-                _articleResource.value = Resource.Loading()
-                when (val response = repository.getArticles(countryCode, token)) {
+                when (val result = repository.getArticles(countryCode, token)) {
                     is Resource.Success -> {
-                        _articleResource.value = response
+                        _uiState.value= HeadlineUiState.Success(articles= result.data!!)
                     }
                     is Resource.Error -> {
-                        _articleResource.value =
-                            Resource.Error(
-                                response.message ?: "Error"
-                            )
+                        _uiState.value=HeadlineUiState.Error("Some error occurred ")
                     }
-                    else -> {}
+                    else -> {
+                        Unit
+                    }
                 }
             }
         } else {
-            _errorMessage.value = "No internet available"
+            _uiState.value=HeadlineUiState.Error(message = "No internet available")
         }
     }
 }

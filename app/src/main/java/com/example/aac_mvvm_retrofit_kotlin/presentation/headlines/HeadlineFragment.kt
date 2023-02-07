@@ -25,8 +25,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 class HeadlineFragment : Fragment(), CellClickListener {
 
     private val TAG: String = "HeadlineFragment"
-    private lateinit var headlineAdapter: HeadlineAdapter
     private lateinit var binding: FragmentHeadlinesBinding
+    private lateinit var headlineAdapter: HeadlineAdapter
     private lateinit var categoryAdapter: HeadlineCategoryAdapter
     private val headlineViewModel: HeadlineViewModel by viewModels()
     private var articleList: ArrayList<Article> = ArrayList()
@@ -59,44 +59,24 @@ class HeadlineFragment : Fragment(), CellClickListener {
 
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun collectHeadlineResponse() {
-        lifecycleScope.launchWhenStarted {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                headlineViewModel.articleResource.collect { response ->
-                    when (response) {
-                        is Resource.Loading -> {
-                            Log.d(TAG, "articleResponse: is loading")
-                            showHeadlineLoader()
-                        }
+    private fun init() {
+        setupCategoryRecyclerView()
+        setupHeadlineRecyclerView()
+    }
 
-                        is Resource.Success -> {
-                            Log.d(
-                                TAG,
-                                "articleResponse: size" +
-                                        response.data?.size +
-                                        " \n data " + response.data.toString()
-                            )
-                            hideHeadlineLoader()
-                            hideSwipeRefresh()
-                            showHeadlineList()
-                            response.data?.let { data ->
-                                articleList = data as ArrayList<Article>
-                                headlineAdapter.setItems(articleList)
-                            }
-                        }
+    private fun setupCategoryRecyclerView() {
+        val headlineCategories = getAllHeadlineCategories()
+        val mLayoutManager = LinearLayoutManager(context)
+        mLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.recyclerViewHeadlineCategory.layoutManager = mLayoutManager
+        categoryAdapter = HeadlineCategoryAdapter(context, headlineCategories)
+        binding.recyclerViewHeadlineCategory.adapter = categoryAdapter
+    }
 
-                        is Resource.Error -> {
-                            Log.d(TAG, "articleResponse: error")
-                        }
-
-                        else -> {
-
-                        }
-                    }
-                }
-            }
-        }
+    private fun setupHeadlineRecyclerView() {
+        binding.recyclerViewHeadlines.layoutManager = LinearLayoutManager(context)
+        headlineAdapter = HeadlineAdapter(context, articleList, this)
+        binding.recyclerViewHeadlines.adapter = headlineAdapter
     }
 
     private fun clearHeadline() {
@@ -134,26 +114,37 @@ class HeadlineFragment : Fragment(), CellClickListener {
         binding.swipeRefreshHeadline.isRefreshing = false
     }
 
-    private fun init() {
-        setupCategoryRecyclerView()
-        setupHeadlineRecyclerView()
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private fun collectHeadlineResponse() {
+        lifecycleScope.launchWhenStarted {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                headlineViewModel.uiState.collect { uiState ->
+                    when (uiState) {
+                        is HeadlineUiState.Loading -> {
+                            Log.d(TAG, "articleResponse: is loading")
+                            showHeadlineLoader()
+                        }
 
+                        is HeadlineUiState.Success -> {
+                            hideHeadlineLoader()
+                            hideSwipeRefresh()
+                            showHeadlineList()
 
-    private fun setupCategoryRecyclerView() {
-        val headlineCategories = getAllHeadlineCategories()
+                            articleList= uiState.articles as ArrayList<Article>
+                            headlineAdapter.setItems(articleList)
+                        }
 
-        val mLayoutManager = LinearLayoutManager(context)
-        mLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        binding.recyclerViewHeadlineCategory.layoutManager = mLayoutManager
-        categoryAdapter = HeadlineCategoryAdapter(context, headlineCategories)
-        binding.recyclerViewHeadlineCategory.adapter = categoryAdapter
-    }
+                        is HeadlineUiState.Error -> {
+                            Log.d(TAG, "articleResponse: error")
+                        }
 
-    private fun setupHeadlineRecyclerView() {
-        binding.recyclerViewHeadlines.layoutManager = LinearLayoutManager(context)
-        headlineAdapter = HeadlineAdapter(context, articleList, this)
-        binding.recyclerViewHeadlines.adapter = headlineAdapter
+                        else -> {
+                            Unit
+                        }
+                    }
+                }
+            }
+        }
     }
 
     override fun onCellClickListener(position: Int) {

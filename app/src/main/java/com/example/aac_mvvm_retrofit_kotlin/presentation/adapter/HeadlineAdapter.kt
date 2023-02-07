@@ -20,10 +20,10 @@ class HeadlineAdapter(
     private val context: Context?,
     private var articleList: ArrayList<Article>,
     private val cellClickListener: CellClickListener
-    ) : RecyclerView.Adapter<HeadlineAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<HeadlineAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val binding= EachRowHeadlinesBinding.inflate(
+        val binding = EachRowHeadlinesBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false,
@@ -38,7 +38,7 @@ class HeadlineAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = articleList[position]
         holder.bind(item)
-        holder.itemView.setOnClickListener{
+        holder.itemView.setOnClickListener {
             cellClickListener.onCellClickListener(holder.absoluteAdapterPosition)
         }
     }
@@ -49,12 +49,13 @@ class HeadlineAdapter(
         notifyDataSetChanged()
     }
 
-    inner class MyViewHolder(private val binding: EachRowHeadlinesBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(private val binding: EachRowHeadlinesBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Article) {
-            binding.tvHeadlineTitle.text= "$absoluteAdapterPosition ${item.title}"
+            binding.tvHeadlineTitle.text = "${absoluteAdapterPosition + 1}. ${item.title}"
             Glide.with(context!!)
                 .load(item.thumbnail)
-                .transform(CenterCrop(),RoundedCorners(15))
+                .transform(CenterCrop(), RoundedCorners(15))
                 .into(binding.imgViewThumbnail)
         }
     }
